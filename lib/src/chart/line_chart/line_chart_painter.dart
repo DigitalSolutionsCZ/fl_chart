@@ -18,8 +18,9 @@ class LineChartCustomData {
   final Color color;
   final TextPainter tp;
   final double topOffset;
+  final Color bgColor;
 
-  LineChartCustomData(this.tp, this.color, this.topOffset);
+  LineChartCustomData(this.tp, this.color, this.topOffset, this.bgColor);
 }
 
 /// Paints [LineChartData] in the canvas, it can be used in a [CustomPainter]
@@ -750,9 +751,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
               barData.aboveBarData.spotsLine.flLineStyle.strokeWidth;
           _barAreaLinesPaint.transparentIfWidthIsZero();
 
+          final double _offsetTop =
+              barData.aboveBarData.spotsLine.getOffsetTopItem(spot);
+
           canvasWrapper.drawDashedLine(
               from,
-              Offset(to.dx, to.dy + barData.aboveBarData.spotsLine.offsetTop),
+              Offset(to.dx, to.dy + _offsetTop),
               _barAreaLinesPaint,
               barData.aboveBarData.spotsLine.flLineStyle.dashArray);
         }
@@ -1004,7 +1008,8 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       throw Exception('tooltipItems and touchedSpots size should be same');
     }
 
-    _bgTouchTooltipPaint.color = tooltipData.tooltipBgColor;
+    // _bgTouchTooltipPaint.color = tooltipData.tooltipBgColor;
+    // _bgTouchTooltipPaint =
     for (var i = 0; i < showingTooltipSpots.showingSpots.length; i++) {
       final tooltipItem = tooltipItems[i];
       if (tooltipItem == null) {
@@ -1025,9 +1030,11 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
       tp.layout(maxWidth: tooltipData.maxContentWidth);
       drawingTextPainters.add(tp);
       drawingTextCustomData.add(LineChartCustomData(
-          tp,
-          tooltipItem.borderColor ?? tooltipData.tooltipBgColor,
-          tooltipItem.topOffset ?? 0));
+        tp,
+        tooltipItem.borderColor ?? tooltipData.tooltipBgColor,
+        tooltipItem.topOffset ?? 0,
+        tooltipData.tooltipBgColor,
+      ));
     }
     if (drawingTextPainters.isEmpty) {
       return;
@@ -1177,7 +1184,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
       final Paint rectPaint = Paint()
         ..style = PaintingStyle.stroke
+        ..strokeWidth = 1.5
         ..color = customData.color;
+
+      final Paint rectPaintBody = Paint()
+        ..style = PaintingStyle.fill
+        ..color = customData.bgColor;
 
       canvasWrapper.drawRotated(
         size: rect.size,
@@ -1185,6 +1197,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
         drawOffset: rectDrawOffset,
         angle: rotateAngle,
         drawCallback: () {
+          canvasWrapper.drawRRect(trullyRoundedRect, rectPaintBody);
           canvasWrapper.drawRRect(trullyRoundedRect, rectPaint);
           canvasWrapper.drawText(tp, drawOffset);
         },
