@@ -663,6 +663,9 @@ class BarAreaSpotsLine with EquatableMixin {
   /// Optional top offset
   final double offsetTop;
 
+  // Offset top for specific tooltip
+  final GetOffsetSpotLine getOffsetTopItem;
+
   /// Holds appearance of drawing line on the spots.
   final FlLine flLineStyle;
 
@@ -680,11 +683,13 @@ class BarAreaSpotsLine with EquatableMixin {
     double? offsetTop,
     FlLine? flLineStyle,
     CheckToShowSpotLine? checkToShowSpotLine,
+    GetOffsetSpotLine? getOffsetTopItem,
     bool? applyCutOffY,
   })  : offsetTop = offsetTop ?? 0,
         show = show ?? false,
         flLineStyle = flLineStyle ?? FlLine(),
         checkToShowSpotLine = checkToShowSpotLine ?? showAllSpotsBelowLine,
+        getOffsetTopItem = getOffsetTopItem ?? getDefaultOffsetTopItem,
         applyCutOffY = applyCutOffY ?? true;
 
   /// Lerps a [BarAreaSpotsLine] based on [t] value, check [Tween.lerp].
@@ -694,6 +699,7 @@ class BarAreaSpotsLine with EquatableMixin {
       show: b.show,
       offsetTop: b.offsetTop,
       checkToShowSpotLine: b.checkToShowSpotLine,
+      getOffsetTopItem: b.getOffsetTopItem,
       flLineStyle: FlLine.lerp(a.flLineStyle, b.flLineStyle, t),
       applyCutOffY: b.applyCutOffY,
     );
@@ -706,6 +712,7 @@ class BarAreaSpotsLine with EquatableMixin {
         offsetTop,
         flLineStyle,
         checkToShowSpotLine,
+        getOffsetTopItem,
         applyCutOffY,
       ];
 }
@@ -716,9 +723,15 @@ class BarAreaSpotsLine with EquatableMixin {
 /// show or not show the line on the provided spot.
 typedef CheckToShowSpotLine = bool Function(FlSpot spot);
 
+typedef GetOffsetSpotLine = double Function(FlSpot spot);
+
 /// Shows all spot lines.
 bool showAllSpotsBelowLine(FlSpot spot) {
   return true;
+}
+
+double getDefaultOffsetTopItem(FlSpot spot) {
+  return 0;
 }
 
 /// The callback passed to get the color of a [FlSpot]
@@ -1727,6 +1740,8 @@ class LineTooltipItem with EquatableMixin {
   /// Optional top offset
   final double? topOffset;
 
+  final Color? color;
+
   /// Showing text.
   final String text;
 
@@ -1749,6 +1764,7 @@ class LineTooltipItem with EquatableMixin {
     this.textStyle, {
     this.topOffset,
     this.borderColor,
+    this.color,
     this.textAlign = TextAlign.center,
     this.textDirection = TextDirection.ltr,
     this.children,
@@ -1762,6 +1778,7 @@ class LineTooltipItem with EquatableMixin {
         textAlign,
         topOffset,
         borderColor,
+        color,
         textDirection,
         children,
       ];
