@@ -664,14 +664,17 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
             );
           }
 
-          _barAreaLinesPaint.color =
-              barData.belowBarData.spotsLine.flLineStyle.color;
-          _barAreaLinesPaint.strokeWidth =
-              barData.belowBarData.spotsLine.flLineStyle.strokeWidth;
+          FlLine lineStyle = barData.belowBarData.spotsLine.flLineStyle;
+          if (barData.belowBarData.spotsLine.getFlLine != null) {
+            lineStyle = barData.belowBarData.spotsLine.getFlLine(spot);
+          }
+
+          _barAreaLinesPaint.color = lineStyle.color;
+          _barAreaLinesPaint.strokeWidth = lineStyle.strokeWidth;
           _barAreaLinesPaint.transparentIfWidthIsZero();
 
-          canvasWrapper.drawDashedLine(from, to, _barAreaLinesPaint,
-              barData.belowBarData.spotsLine.flLineStyle.dashArray);
+          canvasWrapper.drawDashedLine(
+              from, to, _barAreaLinesPaint, lineStyle.dashArray);
         }
       }
     }
@@ -745,20 +748,20 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
             );
           }
 
-          _barAreaLinesPaint.color =
-              barData.aboveBarData.spotsLine.flLineStyle.color;
-          _barAreaLinesPaint.strokeWidth =
-              barData.aboveBarData.spotsLine.flLineStyle.strokeWidth;
+          FlLine lineStyle = barData.belowBarData.spotsLine.flLineStyle;
+          if (barData.belowBarData.spotsLine.getFlLine != null) {
+            lineStyle = barData.belowBarData.spotsLine.getFlLine(spot);
+          }
+
+          _barAreaLinesPaint.color = lineStyle.color;
+          _barAreaLinesPaint.strokeWidth = lineStyle.strokeWidth;
           _barAreaLinesPaint.transparentIfWidthIsZero();
 
           final double _offsetTop =
               barData.aboveBarData.spotsLine.getOffsetTopItem(spot);
 
-          canvasWrapper.drawDashedLine(
-              from,
-              Offset(to.dx, to.dy + _offsetTop),
-              _barAreaLinesPaint,
-              barData.aboveBarData.spotsLine.flLineStyle.dashArray);
+          canvasWrapper.drawDashedLine(from, Offset(to.dx, to.dy + _offsetTop),
+              _barAreaLinesPaint, lineStyle.dashArray);
         }
       }
     }
