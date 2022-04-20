@@ -682,12 +682,14 @@ class BarAreaSpotsLine with EquatableMixin {
     bool? show,
     double? offsetTop,
     FlLine? flLineStyle,
+    GetFlLine? getFlLine,
     CheckToShowSpotLine? checkToShowSpotLine,
     GetOffsetSpotLine? getOffsetTopItem,
     bool? applyCutOffY,
   })  : offsetTop = offsetTop ?? 0,
         show = show ?? false,
         flLineStyle = flLineStyle ?? FlLine(),
+        getFlLine = getFlLine ?? getDefaultFlLine,
         checkToShowSpotLine = checkToShowSpotLine ?? showAllSpotsBelowLine,
         getOffsetTopItem = getOffsetTopItem ?? getDefaultOffsetTopItem,
         applyCutOffY = applyCutOffY ?? true;
@@ -700,6 +702,7 @@ class BarAreaSpotsLine with EquatableMixin {
       offsetTop: b.offsetTop,
       checkToShowSpotLine: b.checkToShowSpotLine,
       getOffsetTopItem: b.getOffsetTopItem,
+      getFlLine: b.getFlLine,
       flLineStyle: FlLine.lerp(a.flLineStyle, b.flLineStyle, t),
       applyCutOffY: b.applyCutOffY,
     );
@@ -711,6 +714,7 @@ class BarAreaSpotsLine with EquatableMixin {
         show,
         offsetTop,
         flLineStyle,
+        getFlLine,
         checkToShowSpotLine,
         getOffsetTopItem,
         applyCutOffY,
@@ -725,6 +729,8 @@ typedef CheckToShowSpotLine = bool Function(FlSpot spot);
 
 typedef GetOffsetSpotLine = double Function(FlSpot spot);
 
+typedef GetFlLine = FlLine Function(FlSpot spot);
+
 /// Shows all spot lines.
 bool showAllSpotsBelowLine(FlSpot spot) {
   return true;
@@ -732,6 +738,10 @@ bool showAllSpotsBelowLine(FlSpot spot) {
 
 double getDefaultOffsetTopItem(FlSpot spot) {
   return 0;
+}
+
+double getDefaultFlLine(FlSpot spot) {
+  return FlLine();
 }
 
 /// The callback passed to get the color of a [FlSpot]
