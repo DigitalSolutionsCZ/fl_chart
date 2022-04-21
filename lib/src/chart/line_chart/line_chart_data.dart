@@ -669,6 +669,9 @@ class BarAreaSpotsLine with EquatableMixin {
   /// Holds appearance of drawing line on the spots.
   final FlLine flLineStyle;
 
+  // LintStyle for specific line
+  final GetFlLine? getFlLine;
+
   /// Checks to show or hide lines on the spots.
   final CheckToShowSpotLine checkToShowSpotLine;
 
@@ -689,7 +692,7 @@ class BarAreaSpotsLine with EquatableMixin {
   })  : offsetTop = offsetTop ?? 0,
         show = show ?? false,
         flLineStyle = flLineStyle ?? FlLine(),
-        getFlLine = getFlLine ?? getDefaultFlLine,
+        getFlLine = getFlLine,
         checkToShowSpotLine = checkToShowSpotLine ?? showAllSpotsBelowLine,
         getOffsetTopItem = getOffsetTopItem ?? getDefaultOffsetTopItem,
         applyCutOffY = applyCutOffY ?? true;
@@ -702,7 +705,7 @@ class BarAreaSpotsLine with EquatableMixin {
       offsetTop: b.offsetTop,
       checkToShowSpotLine: b.checkToShowSpotLine,
       getOffsetTopItem: b.getOffsetTopItem,
-      getFlLine: b.getFlLine,
+      getFlLine: b.getFlLine ?? null,
       flLineStyle: FlLine.lerp(a.flLineStyle, b.flLineStyle, t),
       applyCutOffY: b.applyCutOffY,
     );
@@ -740,7 +743,7 @@ double getDefaultOffsetTopItem(FlSpot spot) {
   return 0;
 }
 
-double getDefaultFlLine(FlSpot spot) {
+FlLine getDefaultFlLine(FlSpot spot) {
   return FlLine();
 }
 

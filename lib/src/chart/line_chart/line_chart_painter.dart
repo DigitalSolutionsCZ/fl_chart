@@ -666,7 +666,7 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
 
           FlLine lineStyle = barData.belowBarData.spotsLine.flLineStyle;
           if (barData.belowBarData.spotsLine.getFlLine != null) {
-            lineStyle = barData.belowBarData.spotsLine.getFlLine(spot);
+            lineStyle = barData.belowBarData.spotsLine.getFlLine!(spot);
           }
 
           _barAreaLinesPaint.color = lineStyle.color;
@@ -748,9 +748,9 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
             );
           }
 
-          FlLine lineStyle = barData.belowBarData.spotsLine.flLineStyle;
-          if (barData.belowBarData.spotsLine.getFlLine != null) {
-            lineStyle = barData.belowBarData.spotsLine.getFlLine(spot);
+          FlLine lineStyle = barData.aboveBarData.spotsLine.flLineStyle;
+          if (barData.aboveBarData.spotsLine.getFlLine != null) {
+            lineStyle = barData.aboveBarData.spotsLine.getFlLine!(spot);
           }
 
           _barAreaLinesPaint.color = lineStyle.color;
@@ -760,8 +760,12 @@ class LineChartPainter extends AxisChartPainter<LineChartData> {
           final double _offsetTop =
               barData.aboveBarData.spotsLine.getOffsetTopItem(spot);
 
-          canvasWrapper.drawDashedLine(from, Offset(to.dx, to.dy + _offsetTop),
-              _barAreaLinesPaint, lineStyle.dashArray);
+          canvasWrapper.drawDashedLine(
+            from,
+            Offset(to.dx, to.dy + _offsetTop),
+            _barAreaLinesPaint,
+            lineStyle.dashArray,
+          );
         }
       }
     }
