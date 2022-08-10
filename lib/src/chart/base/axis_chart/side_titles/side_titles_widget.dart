@@ -98,7 +98,7 @@ class SideTitlesWidget extends StatelessWidget {
     switch (side) {
       case TitlesSide.right:
       case TitlesSide.left:
-        return titlesData.allSidesPadding.vertical;
+        return titlesData.leftTitles.float || titlesData.rightTitles.float ? parentSize.height + 15 : titlesData.allSidesPadding.vertical;
       case TitlesSide.top:
       case TitlesSide.bottom:
         return titlesData.allSidesPadding.horizontal;
@@ -166,7 +166,8 @@ class SideTitlesWidget extends StatelessWidget {
       return Container();
     }
     final axisViewSize = isHorizontal ? parentSize.width : parentSize.height;
-    return Align(
+
+    final Widget child = Align(
       alignment: alignment,
       child: Flex(
         direction: counterDirection,
@@ -184,17 +185,20 @@ class SideTitlesWidget extends StatelessWidget {
               width: isHorizontal ? axisViewSize : sideTitles.reservedSize,
               height: isHorizontal ? sideTitles.reservedSize : axisViewSize,
               margin: thisSidePadding,
-              child: SideTitlesFlex(
-                direction: direction,
-                axisSideMetaData: AxisSideMetaData(
-                  axisMin,
-                  axisMax,
-                  axisViewSize - thisSidePaddingTotal,
-                ),
-                widgetHolders: makeWidgets(
-                  axisViewSize - thisSidePaddingTotal,
-                  axisMin,
-                  axisMax,
+              child: FractionalTranslation(
+                translation: Offset(axisTitles.float ? -0.3 : 0, 0),
+                child: SideTitlesFlex(
+                  direction: direction,
+                  axisSideMetaData: AxisSideMetaData(
+                    axisMin,
+                    axisMax,
+                    axisViewSize - thisSidePaddingTotal,
+                  ),
+                  widgetHolders: makeWidgets(
+                    axisViewSize - thisSidePaddingTotal,
+                    axisMin,
+                    axisMax,
+                  ),
                 ),
               ),
             ),
@@ -207,6 +211,8 @@ class SideTitlesWidget extends StatelessWidget {
         ],
       ),
     );
+
+    return child;
   }
 }
 

@@ -178,6 +178,8 @@ class AxisTitles with EquatableMixin {
   /// In the future, we will convert tooltips to a widget, that would solve this problem.
   final bool drawBelowEverything;
 
+  final bool float;
+
   /// If there is something to show as axisTitles, it returns true
   bool get showAxisTitles => axisNameWidget != null && axisNameSize != 0;
 
@@ -196,10 +198,12 @@ class AxisTitles with EquatableMixin {
     double? axisNameSize,
     SideTitles? sideTitles,
     bool? drawBehindEverything,
+    bool? float,
   })  : axisNameWidget = axisNameWidget,
         axisNameSize = axisNameSize ?? 16,
         sideTitles = sideTitles ?? SideTitles(),
-        drawBelowEverything = drawBehindEverything ?? false;
+        drawBelowEverything = drawBehindEverything ?? false,
+        float = float ?? false;
 
   /// Lerps a [AxisTitles] based on [t] value, check [Tween.lerp].
   static AxisTitles lerp(AxisTitles a, AxisTitles b, double t) {
@@ -208,6 +212,7 @@ class AxisTitles with EquatableMixin {
       axisNameSize: lerpDouble(a.axisNameSize, b.axisNameSize, t),
       sideTitles: SideTitles.lerp(a.sideTitles, b.sideTitles, t),
       drawBehindEverything: b.drawBelowEverything,
+      float: b.float,
     );
   }
 
@@ -218,12 +223,14 @@ class AxisTitles with EquatableMixin {
     double? axisNameSize,
     SideTitles? sideTitles,
     bool? drawBelowEverything,
+    bool? float,
   }) {
     return AxisTitles(
       axisNameWidget: axisNameWidget ?? this.axisNameWidget,
       axisNameSize: axisNameSize ?? this.axisNameSize,
       sideTitles: sideTitles ?? this.sideTitles,
       drawBehindEverything: drawBelowEverything ?? this.drawBelowEverything,
+      float: float ?? this.float,
     );
   }
 
@@ -234,6 +241,7 @@ class AxisTitles with EquatableMixin {
         axisNameSize,
         sideTitles,
         drawBelowEverything,
+        float,
       ];
 }
 
